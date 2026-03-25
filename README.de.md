@@ -1,7 +1,7 @@
 # Brad Phelan
 
 **Principal Software Engineer**
-Aachen, Deutschland · [github.com/bradphelan](https://github.com/bradphelan)
+Gmunden, Österreich · Remote · [github.com/bradphelan](https://github.com/bradphelan)
 
 ---
 
@@ -15,7 +15,7 @@ Principal Engineer mit über 25 Jahren Erfahrung in eingebetteten Systemen, Desk
 
 ### Principal Software Engineer
 **ModuleWorks** · Vollzeit
-*April 2019 – heute · Aachen, Deutschland*
+*April 2019 – heute · Aachen, Deutschland · Remote*
 
 ModuleWorks ist der weltweit führende Entwickler von CAD/CAM-Softwarekomponenten für CNC-Maschinensteuerung und -simulation mit einem globalen Marktanteil von über 70 %.
 
