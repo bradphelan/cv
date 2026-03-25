@@ -3,7 +3,6 @@ name: Build CV
 on:
   push:
     branches: [main]
-    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -21,13 +20,6 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y pandoc wkhtmltopdf xvfb
 
-      - name: Build English HTML
-        run: |
-          pandoc README.md -o brad-phelan-cv.html \
-            --standalone \
-            --css style.css \
-            --metadata title="Brad Phelan — CV"
-
       - name: Build English PDF
         run: |
           xvfb-run --auto-servernum \
@@ -40,13 +32,6 @@ jobs:
               -V margin-bottom=20mm \
               -V margin-left=25mm \
               -V margin-right=25mm
-
-      - name: Build German HTML
-        run: |
-          pandoc README.de.md -o brad-phelan-cv-de.html \
-            --standalone \
-            --css style.css \
-            --metadata title="Brad Phelan — Lebenslauf"
 
       - name: Build German PDF
         run: |
@@ -61,20 +46,19 @@ jobs:
               -V margin-left=25mm \
               -V margin-right=25mm
 
-      - name: Commit build outputs (branch push only)
-        if: github.ref_type == 'branch'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add brad-phelan-cv.html brad-phelan-cv.pdf \
-                  brad-phelan-cv-de.html brad-phelan-cv-de.pdf
-          git diff --cached --quiet || git commit -m "ci: rebuild CV [skip ci]"
-          git push
+      - name: Generate version tag
+        id: version
+        run: echo "tag=v$(date +%Y.%m.%d).${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
 
-      - name: Publish GitHub Release (tag push only)
-        if: github.ref_type == 'tag'
+      - name: Create and push tag
+        run: |
+          git tag ${{ steps.version.outputs.tag }}
+          git push origin ${{ steps.version.outputs.tag }}
+
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.version.outputs.tag }}
           files: |
             brad-phelan-cv.pdf
             brad-phelan-cv-de.pdf
