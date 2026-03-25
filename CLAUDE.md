@@ -1,7 +1,7 @@
 # CV Translation Instructions
 
-When asked to translate the CV, read `README.md`, translate it into German following
-the rules below, and write the result to `README.de.md`.
+When asked to translate the CV, or whenever `README.md` is modified, read `README.md`,
+translate it into German following the rules below, and write the result to `README.de.md`.
 
 ## Rules
 
