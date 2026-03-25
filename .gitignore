@@ -1,7 +1,8 @@
-# Build outputs — released as GitHub Release assets, not committed
+# Build outputs — released as GitHub Release assets or GitHub Pages, not committed
 *.pdf
 *.html
 *.docx
+_site/
 
 # Editor
 .vscode/

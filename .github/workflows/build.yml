@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -19,6 +21,26 @@ jobs:
         run: |
           sudo apt-get update -q
           sudo apt-get install -y pandoc wkhtmltopdf xvfb
+
+      - name: Prepare output directories
+        run: mkdir -p _site/de
+
+      - name: Build English HTML
+        run: |
+          pandoc README.md -o _site/index.html \
+            --standalone \
+            --css style.css \
+            --metadata title="Brad Phelan — CV"
+
+      - name: Build German HTML
+        run: |
+          pandoc README.de.md -o _site/de/index.html \
+            --standalone \
+            --css style.css \
+            --metadata title="Brad Phelan — Lebenslauf"
+
+      - name: Copy stylesheet
+        run: cp style.css _site/style.css && cp style.css _site/de/style.css
 
       - name: Build English PDF
         run: |
@@ -62,3 +84,19 @@ jobs:
           files: |
             brad-phelan-cv.pdf
             brad-phelan-cv-de.pdf
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
