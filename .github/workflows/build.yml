@@ -15,19 +15,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pandoc and wkhtmltopdf
+      - name: Install pandoc, wkhtmltopdf, and python deps
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y pandoc wkhtmltopdf xvfb
+          sudo apt-get install -y pandoc wkhtmltopdf xvfb python3-pip
+          pip3 install anthropic
 
-      - name: Build HTML
+      - name: Translate README.md → README.de.md
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python3 scripts/translate.py
+
+      - name: Build English HTML
         run: |
           pandoc README.md -o brad-phelan-cv.html \
             --standalone \
             --css style.css \
             --metadata title="Brad Phelan — CV"
 
-      - name: Build PDF
+      - name: Build English PDF
         run: |
           xvfb-run --auto-servernum \
             pandoc README.md -o brad-phelan-cv.pdf \
@@ -40,10 +46,32 @@ jobs:
               -V margin-left=25mm \
               -V margin-right=25mm
 
+      - name: Build German HTML
+        run: |
+          pandoc README.de.md -o brad-phelan-cv-de.html \
+            --standalone \
+            --css style.css \
+            --metadata title="Brad Phelan — Lebenslauf"
+
+      - name: Build German PDF
+        run: |
+          xvfb-run --auto-servernum \
+            pandoc README.de.md -o brad-phelan-cv-de.pdf \
+              --pdf-engine=wkhtmltopdf \
+              --pdf-engine-opt="--enable-local-file-access" \
+              --css style.css \
+              --metadata title="Brad Phelan — Lebenslauf" \
+              -V margin-top=20mm \
+              -V margin-bottom=20mm \
+              -V margin-left=25mm \
+              -V margin-right=25mm
+
       - name: Commit build outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add brad-phelan-cv.html brad-phelan-cv.pdf
+          git add README.de.md \
+                  brad-phelan-cv.html brad-phelan-cv.pdf \
+                  brad-phelan-cv-de.html brad-phelan-cv-de.pdf
           git diff --cached --quiet || git commit -m "ci: rebuild CV [skip ci]"
           git push
