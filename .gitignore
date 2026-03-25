@@ -1,7 +1,5 @@
-# Build outputs
-*.pdf
+# Build outputs (local only — CI commits these)
 *.docx
-*.html
 
 # Editor
 .vscode/
