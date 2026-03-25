@@ -3,6 +3,7 @@ name: Build CV
 on:
   push:
     branches: [main]
+    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -60,7 +61,8 @@ jobs:
               -V margin-left=25mm \
               -V margin-right=25mm
 
-      - name: Commit build outputs
+      - name: Commit build outputs (branch push only)
+        if: github.ref_type == 'branch'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -68,3 +70,11 @@ jobs:
                   brad-phelan-cv-de.html brad-phelan-cv-de.pdf
           git diff --cached --quiet || git commit -m "ci: rebuild CV [skip ci]"
           git push
+
+      - name: Publish GitHub Release (tag push only)
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            brad-phelan-cv.pdf
+            brad-phelan-cv-de.pdf
