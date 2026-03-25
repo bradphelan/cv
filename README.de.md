@@ -23,6 +23,7 @@ ModuleWorks ist der weltweit führende Entwickler von CAD/CAM-Softwarekomponente
 - Entwicklung des Rotary Machining-Moduls, einschließlich Achsversatzstrategien und konischer Teilbearbeitung, veröffentlicht in Autodesk Fusion 360
 - Erweiterung der Turning-Komponente um verbesserte Schrupp-Funktionen, B-Achsen-Schlichtzyklen und Gewindedrehen
 - Leitung der KI-Werkzeugstrategie und Entwicklerinfrastruktur, einschließlich Evaluierung und Einführung LLM-gestützter Programmierwerkzeuge (Claude Code, Cursor) sowie Mitarbeit im AI Architecture Review Board
+- Entwurf der Plattformarchitektur für Toolpath Visualizer, ein neues internes Produkt zur Qualitätskontrolle und visuellen Validierung von Werkzeugpfadalgorithmen; Übergabe der Implementierung an einen Junior-Ingenieur nach Abschluss des Plattformentwurfs
 - Arbeitssprachen: C++, Python, CMake
 
 ---
