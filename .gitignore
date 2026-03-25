@@ -1,4 +1,6 @@
-# Build outputs (local only — CI commits these)
+# Build outputs — released as GitHub Release assets, not committed
+*.pdf
+*.html
 *.docx
 
 # Editor
